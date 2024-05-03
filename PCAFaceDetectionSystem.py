@@ -3,21 +3,18 @@ import cv2
 import os
 import matplotlib.pyplot as plt
 import tkinter as tk
-import tkinter.messagebox as mb
-import tkinter.filedialog as fd
+
 
 # загрузка изображений
 def load_ORL_faces(data_folder):
     images = []
-    labels = []
     for i in range(1, 41):
         for j in range(1, 11):
             img_path = os.path.join(data_folder, f"s{i}", f"{j}.pgm")
             img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
             if img is not None:
                 images.append(img.flatten())
-                labels.append(i)
-    return np.array(images), np.array(labels)
+    return np.array(images)
 
 # PCA для метода с уменьшением изображения
 def pca_image_reduction(X):
@@ -44,7 +41,7 @@ def pca_gram_schmidt(X):
 
 # загрузка базы данных лиц ORL
 data_folder = "ORLdataset"
-images, _ = load_ORL_faces(data_folder)
+images = load_ORL_faces(data_folder)
 
 # вычисление матриц ковариации и собственных чисел для двух методов
 cov_matrix_image, eigenvalues_image = pca_image_reduction(images)
@@ -75,4 +72,3 @@ plt.title('Собственные числа (преобразование Гр�
 
 plt.tight_layout()
 plt.show()
-
